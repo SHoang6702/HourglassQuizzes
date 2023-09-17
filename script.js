@@ -6,10 +6,10 @@ var grade = document.getElementById("grades");
 var currentQuestion = 0;
 
 // Keeps track of grade
-// var studentGrade = {
-//     studentGrade: studentGrade.value
-// }
-// localStorage.setItem("studentGrade", JSON.stringify(studentGrade));
+var studentGrade = {
+    Grade: null
+}
+localStorage.setItem("studentGrade", JSON.stringify(studentGrade));
 
 //I need to review arrays and loops
 
@@ -57,7 +57,7 @@ const allQuestions = [
 ]
 
 //120 seconds for 5 questions
-var secondsLeft = 10;
+var secondsLeft = 60;
 startBtn.addEventListener("click",
     function(event) {
      var timerInterval = setInterval(function() {
@@ -74,6 +74,12 @@ startBtn.addEventListener("click",
     // prompts first question to appear
     
 );
+
+startBtn.addEventListener("click",
+    function (event) {
+        studentGrade.Grade = 0;
+    }
+)
 startBtn.addEventListener("click",
     function (event) {
         console.log("potato")
@@ -101,12 +107,27 @@ startBtn.addEventListener("click",
         if (event.target.id === allQuestions[currentQuestion].Correct) {
             console.log("correct")
             currentQuestion += 1;
-            regenerateQuestion();
+            studentGrade.Grade += 1;
+            console.log(studentGrade.Grade)
+            document.getElementById("answerGrade").innerHTML ="Correct"
+            if (currentQuestion === allQuestions.length) {
+                testEnd();
+                console.log("goldfish")
+            } else {
+                regenerateQuestion();
+            }
         } else {
             console.log("incorrect")
             console.log("Subtract Time")
+            secondsLeft -= 15;
+            document.getElementById("answerGrade").innerHTML ="Incorrect"
         }   
     })
+)
+startBtn.addEventListener("click",
+    function (event) {
+        startBtn.innerHTML = "";
+    }
 )
 
 function regenerateQuestion() {
@@ -120,22 +141,38 @@ function regenerateQuestion() {
 // Ends the test
 function testEnd() {
     timeEl.textContent = "Time's up!";
+    secondsLeft = 0;
+    document.getElementById("testQuestions").innerHTML = "<p>Grade:" + studentGrade.Grade + "/5</p>";
+    document.getElementById("submitName").innerHTML = "<label for=\"Initials\">Initials</label> <input type=\"text\" name=\"Initials\" id=\"Initials\" placeholder=\"Initials\" />";
+    document.getElementById("submitButton").innerHTML = "<button id=submitButton>Submit</button>";
+    document.getElementById("testAnswers").innerHTML = "";
+    document.getElementById("answerGrade").innerHTML = "";
 }
+
+
+document.getElementById("submitButton").addEventListener("click",
+    function submitScore(event) {
+        var initialsSubmitted = document.getElementById("Initials").value;
+        console.log(initialsSubmitted);
+        document.getElementById("scoreBoard").innerHTML = "<p>" + initialsSubmitted + " " + studentGrade.Grade + "/5</p>";
+
+    }
+)
 
  
 // GIVEN I am taking a code quiz
 
-// WHEN I click the start button (Timer Complete, question WIP)
+// WHEN I click the start button (Complete)
 // THEN a timer starts and I am presented with a question
 
-// WHEN I answer a question (WIP)
+// WHEN I answer a question (Complete)
 // THEN I am presented with another question
 
-// WHEN I answer a question incorrectly (WIP)
+// WHEN I answer a question incorrectly (Complete)
 // THEN time is subtracted from the clock
 
 // WHEN all questions are answered or the timer reaches 0 (Complete)
 // THEN the game is over
 
-// WHEN the game is over ()
+// WHEN the game is over (Complete)
 // THEN I can save my initials and my score
