@@ -3,6 +3,7 @@ var timeEl = document.querySelector('.time');
 var questionEl = document.querySelector("question")
 var mainEl = document.getElementById('main');
 var grade = document.getElementById("grades");
+var currentQuestion = 0;
 
 // Keeps track of grade
 // var studentGrade = {
@@ -10,31 +11,50 @@ var grade = document.getElementById("grades");
 // }
 // localStorage.setItem("studentGrade", JSON.stringify(studentGrade));
 
-const firstQuestions = {
-    Question: "What is the capital of France?",
-    A: "Paris",
-    B: "Toulouse",
-    C: "Nantes",
-    D: "Strasbourg",
-    Correct: "A"
-};
+//I need to review arrays and loops
 
-const secondQuestions = {
-    question: " What is the capital of Germany?",
-    A: "Hamburg",
-    B: "Berlin",
-    C: "Munich",
-    D: "Dortmund",
-    Correct: "B"
-};
-
-const questionCorrect = () => {
-    
-}
-
-const questionIncorrect = () => {
-
-}
+const allQuestions = [
+    firstQuestion = {
+        Question: "What is the capital of France?",
+        A: "Paris",
+        B: "Toulouse",
+        C: "Nantes",
+        D: "Strasbourg",
+        Correct: "A"
+    },
+    secondQuestion = {
+        Question: " What is the capital of Germany?",
+        A: "Hamburg",
+        B: "Berlin",
+        C: "Munich",
+        D: "Dortmund",
+        Correct: "B"
+    },
+    thirdQuestion = {
+        Question: "What is the capital of Italy?",
+        A: "Rome",
+        B: "Venice",
+        C: "Milan",
+        D: "Ravenna",
+        Correct: "A"
+    },
+    fourthQuestion = {
+        Question: "What is the capital of Spain?",
+        A: "Austin",
+        B: "Mexico City",
+        C: "Vienna",
+        D: "Madrid",
+        Correct: "D"
+    },
+    fifthQuestion = {
+        Question: "What is the capital of Sweden?",
+        A: "Brussels",
+        B: "Beijing",
+        C: "Stockholm",
+        D: "Berlin",
+        Correct: "C"
+    }
+]
 
 //120 seconds for 5 questions
 var secondsLeft = 10;
@@ -55,18 +75,48 @@ startBtn.addEventListener("click",
     
 );
 startBtn.addEventListener("click",
-    function(event) {
+    function (event) {
         console.log("potato")
-        document.getElementById("testQuestions").innerHTML="<p>" + firstQuestions.Question + "</p>";
-        document.getElementById("testAnswers").innerHTML=
-        "<button id = answerA>" + firstQuestions.A + "</button><br>" + 
-        "<button id = answerB>" + firstQuestions.B + "</button><br>" + 
-        "<button id = answerC>" + firstQuestions.C + "</button><br>" +
-        "<button id = answerD>" + firstQuestions.D + "</button><br><p></p>";
+        regenerateQuestion();
+        // I need to create a loop to iterate through the questions and iterate over my choice and display all of it.
+
+        // for (let i = 0; i < allQuestions.length; i++) {
+        //     document.getElementById("testQuestions").innerHTML="<p>" + allQuestions[i].Question + "</p>";
+        //     document.getElementById("testAnswers").innerHTML=
+        //     "<button id = A class = questionAnswers>" + allQuestions[i].A + "</button><br>" + 
+        //     "<button id = B class = questionAnswers>" + allQuestions[i].B + "</button><br>" + 
+        //     "<button id = C class = questionAnswers>" + allQuestions[i].C + "</button><br>" +
+        //     "<button id = D class = questionAnswers>" + allQuestions[i].D + "</button><br><p></p>";
+        // }
+        // [firstQuestion][firstQuestion]
+        // allQuestions.firstQuestion.Question === allQuestions[0].Question
     }
 );
 
+startBtn.addEventListener("click",
+    document.getElementById("testAnswers").addEventListener("click",
+    function(event) {
+        console.log("taco")
+        console.log(event.target.id)
+        if (event.target.id === allQuestions[currentQuestion].Correct) {
+            console.log("correct")
+            currentQuestion += 1;
+            regenerateQuestion();
+        } else {
+            console.log("incorrect")
+            console.log("Subtract Time")
+        }   
+    })
+)
 
+function regenerateQuestion() {
+    document.getElementById("testQuestions").innerHTML="<p>" + allQuestions[currentQuestion].Question + "</p>";
+    document.getElementById("testAnswers").innerHTML=
+    "<button id = A class = questionAnswers>" + allQuestions[currentQuestion].A + "</button><br>" + 
+    "<button id = B class = questionAnswers>" + allQuestions[currentQuestion].B + "</button><br>" + 
+    "<button id = C class = questionAnswers>" + allQuestions[currentQuestion].C + "</button><br>" +
+    "<button id = D class = questionAnswers>" + allQuestions[currentQuestion].D + "</button><br><p></p>";
+}
 // Ends the test
 function testEnd() {
     timeEl.textContent = "Time's up!";
